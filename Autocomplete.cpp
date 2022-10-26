@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 
-using namespace std;
-
 #define ALPHABETS 26
 
 struct Node
@@ -41,7 +39,7 @@ void insert (struct Node *root, std::string word)
 
 // For Searching if the word is in the tree
 
-bool search(struct Node *root, string word)
+bool search(struct Node *root, std::string word)
 {
     struct Node *pCrawl = root;
  
@@ -62,15 +60,13 @@ int main()
     std::string data;
     struct Node *root = getNode();
 
-    fstream wordfile;
-    wordfile.open("words/5000-words.txt", ios::in);
-    int count = 0;
+    std::fstream wordfile;
+    wordfile.open("words/5000-words.txt", std::ios::in);
     while(!wordfile.eof())
     {
         wordfile >> data;
         insert(root, data);
-        count++;
-        std::cout << "Inserting " << data << " " << count << endl;
+        std::cout << "Inserting " << data << std::endl;
     }
     wordfile.close();
     return 0;
