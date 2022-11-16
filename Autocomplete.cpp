@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <string.h>
 
 #define ALPHABETS 26
 
@@ -55,6 +57,51 @@ bool search(struct Node *root, std::string word)
     return (pCrawl->endOfWord);
 }
 
+bool isWord(struct Node* root)
+{
+    return root->endOfWord != false;
+}
+
+void display(struct Node* root, char str[], int level)
+{
+    if (isWord(root)) 
+    {
+        str[level] = '\0';
+        std::cout << str << "\t";
+    }
+  
+    int i;
+    for (i = 0; i < ALPHABETS; i++) 
+    {
+        if (root->children[i]) 
+        {
+            str[level] = i + 'a';
+            display(root->children[i], str, level + 1);
+        }
+    }
+}
+
+void skip(struct Node* root,char str[],int level,std::string input)
+{
+    for(int i=0;i<input.length();i++)
+    {
+        if(input[i] == '\0')
+            break;
+        int index = input[i] - 'a';
+        root = root->children[index];
+        str[level] = index + 'a';
+        level++;
+        if(!root)
+        {
+            std::cout<<"No such word."<<std::endl;
+            exit(0);
+        }
+    }
+    display(root,str,level);
+}
+
+
+
 int main()
 {
     std::string data;
@@ -66,8 +113,19 @@ int main()
     {
         wordfile >> data;
         insert(root, data);
-        std::cout << "Inserting " << data << std::endl;
     }
     wordfile.close();
+    int level = 0;
+    char str[100];
+    std::string input;
+    while(1)
+    {
+        std::cout<<"\nEnter letters(-1 to exit): "<<std::endl;
+        std::cin>>input;
+        if(input=="-1")
+            break;
+        skip(root,str,level,input);
+    }
+    
     return 0;
 }
